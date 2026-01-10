@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Madhumittha G | Portfolio</title>
+    
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box; 
+        }
+
+        body {
+            font-family: 'Alice', serif;
+            background-color: #FDFBF9;
+            color: #3E2723;
+            line-height: 1.6;
+        }
+
+        
+        nav {
+            display: flex;
+            justify-content: center;
+            padding: 1.5rem;
+            background: #FDFBF9;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid #E0D7D0;
+        }
+
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #A0522D;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+            transition: 0.3s;
+        }
+
+        nav a:hover {
+            color: #3E2723;
+        }
+
+        
+        header {
+            height: 70vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-color: #F8F1ED;
+            padding: 2rem;
+        }
+
+        header h1 {
+            font-size: 4rem;
+            font-weight: normal;
+        }
+
+        header p {
+            font-size: 1.1rem;
+            color: #A0522D;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            margin-bottom: 2rem;
+        }
+
+        .box {
+            padding: 12px 30px;
+            border: 1px solid #3E2723;
+            color: #3E2723;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .box:hover {
+            background: #3E2723;
+            color: #FDFBF9;
+        }
+
+       
+        section {
+            padding: 6rem 2rem;
+            max-width: 1100px;
+            margin: auto;
+        }
+
+        h2 {
+            font-size: 2.2rem;
+            font-weight: normal;
+            margin-bottom: 3rem;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+       
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .profile-frame {
+            border: 1px solid #A0522D;
+            padding: 15px;
+        }
+
+        .profile-frame img {
+            width: 100%;
+            display: block;
+            filter: sepia(10%);
+        }
+
+       
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            grid-template-rows: repeat(2, auto);    
+            gap: 20px;
+            max-width: 850px; 
+            margin: 0 auto;   
+        }
+
+        .skill-box {
+            border: 1px solid #3E2723;
+            padding: 2.5rem 1rem;
+            text-align: center;
+            background: #fff;
+            transition: 0.4s;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .skill-box:hover {
+            background-color: #3E2723;
+            color: #FDFBF9;
+        }
+
+        
+        .project-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .project-card {
+            border: 1px solid #eee;
+            padding: 2.5rem;
+            background: #fff;
+            transition: 0.3s;
+        }
+
+        .project-card h3 {
+            color: #A0522D;
+            margin-bottom: 10px;
+        }
+
+        
+        .contact-section {
+            background-color: #F8F1ED;
+            padding: 100px 20px;
+            text-align: center;
+        }
+
+        .contact-box {
+            background-color: #3E2723;
+            color: #FDFBF9;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 60px 40px;
+            box-shadow: 15px 15px 0px #A0522D;
+        }
+
+        .contact-box h2 {
+            color: #FDFBF9;
+            margin-bottom: 10px;
+        }
+
+        .email-link {
+            color: #FDFBF9;
+            font-size: 1.3rem;
+            text-decoration: none;
+            border-bottom: 1px solid #A0522D;
+            display: inline-block;
+            margin: 20px 0;
+            transition: 0.3s;
+        }
+
+        .email-link:hover {
+            color: #A0522D;
+        }
+
+       
+        footer {
+            text-align: center;
+            padding: 3rem;
+            font-size: 0.8rem;
+            color: #888;
+        }
+
+        
+        @media (max-width: 768px) {
+            .about-grid, .project-grid, .skills-grid { 
+                grid-template-columns: 1fr; 
+            }
+            header h1 { font-size: 2.5rem; }
+            .contact-box { box-shadow: 10px 10px 0px #A0522D; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <a href="#home">HOME</a>
+        <a href="#about">ABOUT</a>
+        <a href="#skills">SKILLS</a>
+        <a href="#projects">MY WORKS</a>
+        <a href="#contact">CONTACT ME</a>
+    </nav>
+
+    <header id="home">
+       
+        <h1>MADHUMITTHA G</h1>
+        <p>
+WEB DEVELOPER
+        </p>
+       
+    </header>
+
+    <section id="about">
+        <div class="about-grid">
+            <div class="profile-frame">
+                <img src="c:\Users\madhumittha g\Downloads\download.jpg" alt="download.jpg">
+            </div>
+            <div class="about-text">
+                <h2>ABOUT ME</h2>
+                <p>I am Madhumittha G, a Web Developer who builds digital spaces where efficiency meets artistry. I focus on translating technical requirements into elegant web applications.</p>
+                <p style="margin-top: 15px;">
+                    My approach is simple: I solve the hardest problems in the 
+                    backend so the user experiences only ease on the frontend.</p>
+                <br>
+                <a href="#" class="box">Download Resume</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="skills">
+        <h2>SKILLS</h2>
+        <div class="skills-grid">
+            <div class="skill-box">Communication</div>
+            <div class="skill-box">Problem Solving</div>
+            <div class="skill-box">Critical Thinking</div>
+            <div class="skill-box">Leadership</div>
+            <div class="skill-box">Project Management</div>
+            <div class="skill-box">Adaptability</div>
+        </div>
+    </section>
+
+    <section id="projects">
+        <h2>MY WORKS</h2>
+        <div class="project-grid">
+            <div class="project-card">
+                <h3>NEURO TALK</h3>
+                <p>A minimalist communication platform that translates 
+                    complex neurological data into intuitive insights.</p>
+            </div>
+            <div class="project-card">
+                <h3>FLUX READER</h3>
+                <p>A high-performance focus tool that optimizes reading 
+                    efficiency through speed-controlled logic.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section" id="contact">
+        <div class="contact-box">
+            <h2>CONTACT ME</h2>
+            <p>Your Vision. My Code. Seamless Results.</p>
+            <a href="mailto:madhuganesan.08@gmail.com" class="email-link">madhuganesan.08@gmail.com</a>
+            
+        </div>
+    </section>
+
+    <footer>
+        &copy; 2026 Madhumittha G • Built with Code
+    </footer>
+
+</body>
+</html>
