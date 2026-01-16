@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Application</title>
+    <style>
+        body {
+            background-color: #f0f7ff;
+            color: #1a1a1a;
+            font-family: 'Alice', serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5%;
+            background-color: #ffffff;
+            border-bottom: 3px solid #000000;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            cursor: pointer;
+        }
+
+        .logo-img {
+            height: 60px;
+            width: auto;
+            border-radius: 100%;
+        }
+
+        .logo-text { 
+            font-size: 1.8rem; 
+            font-weight: bold; 
+            color: #1a1a1a;
+        }
+        .logo-text span { color: #2a69ac; }
+
+        .auth-buttons button {
+            padding: 10px 22px;
+            font-family: 'Alice', serif;
+            font-size: 1rem;
+            cursor: pointer;
+            border: 2px solid #000;
+            border-radius: 50px;
+            margin-left: 10px;
+            transition: 0.2s;
+        }
+
+        .box-login { background: white; }
+        .box-signup { background: #2a69ac; color: white; }
+        .auth-buttons button:hover { transform: translateY(-2px); box-shadow: 4px 4px 0 #000; }
+
+        .topic {
+            text-align: center;
+            padding: 70px 20px;
+            background: radial-gradient(circle at top, #eef2f3 0%, #d4e8ff 100%);
+        }
+
+        .topic h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .search-container {
+            position: relative;
+            max-width: 500px;
+            margin: 25px auto 0;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 18px 25px 18px 55px;
+            border: 3px solid #1e40af;
+            background: linear-gradient(to right, #ffffff, #f0f9ff);
+            /* Multi-shade blue glow */
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3), 0 0 0 4px #93c5fd, 0 0 0 8px #dbeafe;
+            border-radius: 50px; 
+            font-family: 'Alice';
+            font-size: 1.1rem;
+            outline: none;
+            box-sizing: border-box;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 20px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%231e40af'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+        }
+
+        .pathway { 
+            position: relative;
+            max-width: 850px; 
+            margin: 40px auto; 
+            padding: 20px 0; 
+        }
+        
+        .pathway::after {
+            content: '';
+            position: absolute;
+            width: 6px; 
+            background: #1e40af;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            transform: translateX(-50%);
+            border-radius: 10px;
+        }
+
+        .step { width: 50%; padding: 20px 40px; box-sizing: border-box; position: relative; }
+        .step-left { left: 0; text-align: right; }
+        .step-right { left: 50%; text-align: left; }
+
+        .card {
+            background: white; 
+            border: 2.5px solid #000; 
+            padding: 25px;
+            border-radius: 35px; 
+            transition: 0.3s; 
+            cursor: pointer;
+            box-shadow: 6px 6px 0px #3b82f6;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 10px 10px 0px #1e40af; }
+
+        .modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px);
+            z-index: 2000; justify-content: center; align-items: center;
+        }
+        
+        .modal-box {
+            background: white; border: 3px solid #000; padding: 40px;
+            width: 90%; max-width: 450px; border-radius: 45px;
+            box-shadow: 15px 15px 0px #93c5fd;
+            position: relative;
+        }
+        
+        .close-box { position: absolute; top: 20px; right: 25px; font-size: 2rem; cursor: pointer; }
+        
+        input {
+            width: 100%; padding: 14px; margin: 10px 0;
+            border: 2px solid #cbd5e1; border-radius: 20px;
+            font-family: 'Alice'; box-sizing: border-box; outline: none;
+        }
+        input:focus { border-color: #3b82f6; background: #f8faff; }
+
+        .action-box {
+            width: 100%; background: #2a69ac; color: white; 
+            border: 2px solid #000; padding: 15px; 
+            font-family: 'Alice'; font-weight: bold; font-size: 1.1rem;
+            cursor: pointer; margin-top: 15px; border-radius: 30px;
+            transition: 0.2s;
+        }
+        .action-box:hover { background: #1e40af; transform: scale(1.02); }
+
+        @media (max-width: 700px) {
+            .pathway::after { left: 30px; }
+            .step { width: 100%; left: 0; padding-left: 70px; text-align: left; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav>
+        <div class="logo-container" onclick="location.reload()">
+            <img src="c:\Users\madhumittha g\Downloads\Gemini_Generated_Image_u74ds6u74ds6u74d.png" alt="NextStep Logo" class="logo-img">
+            <div class="logo-text">NextStep<span>.</span></div>
+        </div>
+        <div class="auth-buttons">
+            <button class="box-login" onclick="openAuthModal('login')">Login</button>
+            <button class="box-signup" onclick="openAuthModal('signup')">Sign Up</button>
+        </div>
+    </nav>
+
+    <div class="topic">
+        <h1>The elite graduate gateway.</h1>
+        <div class="search-container">
+            <div class="search-icon"></div>
+            <input type="text" class="search-input" id="searchJobs" placeholder="Search by skill or company..." onkeyup="search()">
+        </div>
+    </div>
+
+    <div class="pathway" id="jobPath"></div>
+
+    <div class="modal-overlay" id="authModal">
+        <div class="modal-box">
+            <span class="close-box" onclick="closeModal('authModal')">&times;</span>
+            <h2 id="authTitle">Login</h2>
+            <div id="signupOnlyFields" style="display: none;">
+                <input type="text" placeholder="Full Name">
+            </div>
+            <input type="email" placeholder="Email Address">
+            <input type="password" placeholder="Password">
+            <button class="action-btn" onclick="handleAuth()">Continue</button>
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="appModal">
+        <div class="modal-box">
+            <span class="close-box" onclick="closeModal('appModal')">&times;</span>
+            <h2 id="jobLabel">Job Application</h2>
+            <p id="companyLabel" style="color: #64748b; margin-bottom: 20px;"></p>
+            
+            <input type="text" id="appFullName" placeholder="Full Name">
+            <input type="email" id="appEmail" placeholder="Email Address">
+            <input type="tel" id="appPhone" placeholder="Contact Number">
+            <input type="url" id="appLinkedIn" placeholder="LinkedIn Profile Link">
+            
+            <button class="action-box" onclick="submitApplication()">Submit Application</button>
+        </div>
+    </div>
+
+    <script>
+        const jobs = [
+            { title: "Business Systems Analyst", co: "FinTech Corp", loc: "Brazil" },
+            { title: "Product Manager (Tech)", co: "Google", loc: "Switzerland" },
+            { title: "Data Strategist", co: "Netflix", loc: "USA" },
+            { title: "IT Consultant", co: "Deloitte", loc: "Japan" },
+            { title: "Enterprise Architect", co: "IBM", loc: "Europe" },
+            { title: "FinOps Engineer", co: "Microsoft", loc: "USA" }
+        ];
+
+        const renderPath = (list) => {
+            const container = document.getElementById('jobPath');
+            container.innerHTML = '';
+            list.forEach((job, index) => {
+                const side = (index % 2 === 0) ? 'step-left' : 'step-right';
+                container.innerHTML += `
+                    <div class="step ${side}">
+                        <div class="card" onclick="openAppModal('${job.title}', '${job.co}')">
+                            <h3>${job.title}</h3>
+                            <p>${job.co} • ${job.loc}</p>
+                        </div>
+                    </div>
+                `;
+            });
+        };
+
+        const search = () => {
+            const val = document.getElementById('searchJobs').value.toLowerCase();
+            const filtered = jobs.filter(j => j.title.toLowerCase().includes(val) || j.co.toLowerCase().includes(val));
+            renderPath(filtered);
+        };
+
+        const openAuthModal = (mode) => {
+            document.getElementById('authTitle').innerText = mode === 'login' ? 'Welcome Back' : 'Create Account';
+            document.getElementById('signupOnlyFields').style.display = mode === 'signup' ? 'block' : 'none';
+            document.getElementById('authModal').style.display = 'flex';
+        };
+
+        const openAppModal = (title, company) => {
+            document.getElementById('jobLabel').innerText = title;
+            document.getElementById('companyLabel').innerText = "at " + company;
+            document.getElementById('appModal').style.display = 'flex';
+        };
+
+        const closeModal = (id) => {
+            document.getElementById(id).style.display = 'none';
+        };
+
+        const handleAuth = () => { alert("Welcome to NextStep!"); closeModal('authModal'); };
+        
+        const submitApplication = () => { 
+            const name = document.getElementById('appFullName').value;
+            if(name) {
+                alert("Thank you " + name + "! Your application has been sent to the NextStep team."); 
+                closeModal('appModal'); 
+            } else {
+                alert("Please enter your name.");
+            }
+        };
+
+        renderPath(jobs);
+    </script>
+</body>
+</html>
