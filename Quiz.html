@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QUIZ - The Green Sequence</title>
+    <style>
+        body { 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            background-color: #F4EAE6; 
+            color: #5D4037;
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .main-wrapper { width: 90%; max-width: 450px; position: relative; z-index: 2; }
+
+        .question-pod {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 20px;
+            border: 4px solid #D4A5A5; 
+            box-shadow: 0 10px 0px rgba(212, 165, 165, 0.2);
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .answer-pod {
+            background-color: #ffffff;
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid #D9C5B2;
+            box-shadow: 0 15px 35px rgba(93, 64, 55, 0.08);
+        }
+
+        .step-label {
+            font-size: 0.7rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #8E736B; 
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        h2 { font-size: 1.4rem; margin: 0; line-height: 1.3; color: #5D4037; }
+
+        .choice-row { 
+            display: block; width: 100%; padding: 16px; margin: 12px 0; 
+            border: 2px solid #E5D3C5; border-radius: 12px; 
+            cursor: pointer; transition: all 0.2s ease; 
+            background-color: #ffffff; color: #5D4037; 
+            font-size: 1rem; text-align: left; font-weight: bold;
+        }
+
+        .choice-row:hover:not([disabled]) { 
+            background-color: #FDF8F5; border-color: #D4A5A5; transform: translateY(-2px);
+        }
+
+        .state-right { background-color: #A3B18A !important; color: #ffffff !important; border-color: #849669 !important; }
+        .state-wrong { background-color: #C97C5D !important; color: #ffffff !important; border-color: #A44A3F !important; }
+
+        .action-large { 
+            background-color: #BC8E8E; color: #ffffff; border: none; padding: 20px; 
+            border-radius: 12px; cursor: pointer; font-size: 1.1rem; 
+            font-weight: bold; letter-spacing: 2px; text-transform: uppercase;
+            width: 100%; transition: 0.3s;
+        }
+
+        .action-large:hover { background-color: #5D4037; transform: scale(1.02); }
+
+        .hidden { display: none !important; }
+
+        #score-big { font-size: 7rem; font-weight: bold; color: #D4A5A5; margin: 0; line-height: 1; }
+
+        /* --- POP UP DECORATION --- */
+        #celebration-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.96);
+            z-index: 100; display: flex; flex-direction: column;
+            justify-content: center; align-items: center;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        .medal-icon { font-size: 5rem; margin-bottom: 20px; animation: bounce 1s infinite; }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+
+        .perfect-text { color: #849669; font-size: 2.5rem; font-weight: bold; text-align: center; margin: 10px; }
+
+        .confetti {
+            position: absolute; width: 10px; height: 10px; 
+            top: -10px; border-radius: 2px; animation: fall 3s linear infinite;
+        }
+        @keyframes fall { to { transform: translateY(100vh) rotate(720deg); } }
+    </style>
+</head>
+<body>
+
+<div id="celebration-overlay" class="hidden">
+    <div id="medal-emoji" class="medal-icon">🏆</div>
+    <div id="perfect-title" class="perfect-text">10 / 10</div>
+    <div id="appreciation-text" style="font-size: 1.2rem; color: #5D4037; margin-bottom: 30px; text-align: center; padding: 0 20px;">
+        </div>
+    <button class="action-large" style="width: 200px;" onclick="location.reload()">Re-Trace</button>
+</div>
+
+<div class="main-wrapper">
+    <div id="intro">
+        <div class="question-pod">
+            <span class="step-label">The Green Sequence</span>
+            <h2>BLOOM</h2>
+        </div>
+        <div class="answer-pod" style="text-align: center;">
+            <p style="margin-bottom: 30px; color: #8E736B;">EVALUATING ENVIRONMENTAL KNOWLEDGE.</p>
+            <button class="action-large" onclick="begin()">Trace the Path</button>
+        </div>
+    </div>
+
+    <div id="gameplay" class="hidden">
+        <div class="question-pod">
+            <span class="step-label" id="q-count">QUESTION 1 - 10</span>
+            <h2 id="q-text">Loading...</h2>
+        </div>
+        <div class="answer-pod" id="choices-grid"></div>
+    </div>
+
+    <div id="results" class="hidden">
+        <div class="question-pod">
+            <span class="step-label">Sequence Finalized</span>
+            <h2>Your Score</h2>
+        </div>
+        <div class="answer-pod" style="text-align: center;">
+            <div id="score-big">0</div>
+            <p style="margin-bottom: 25px; letter-spacing: 4px; font-weight: bold; opacity: 0.6;">POINTS</p>
+            <button class="action-large" onclick="location.reload()">Try Again</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    const ecoDB = [
+        { q: "Which gas is most responsible for global warming?", a: ["Oxygen", "Nitrogen", "Carbon Dioxide", "Hydrogen"], c: 2 },
+        { q: "Primary source of energy for Earth's climate?", a: ["Geothermal", "The Sun", "Wind", "Nuclear"], c: 1 },
+        { q: "Forest known as the 'Lungs of the Planet'?", a: ["Taiga", "Congo", "Amazon", "Black Forest"], c: 2 },
+        { q: "Most recycled material in the world?", a: ["Plastic", "Glass", "Paper", "Steel"], c: 3 },
+        { q: "Animal symbol of the WWF?", a: ["Polar Bear", "Giant Panda", "Tiger", "Elephant"], c: 1 },
+        { q: "Layer protecting us from UV rays?", a: ["Exosphere", "Ozone Layer", "Mesosphere", "Troposphere"], c: 1 },
+        { q: "Percentage of Earth's water that is fresh?", a: ["3%", "10%", "25%", "50%"], c: 0 },
+        { q: "Sector using the most water worldwide?", a: ["Industry", "Domestic", "Agriculture", "Mining"], c: 2 },
+        { q: "Fastest growing renewable energy source?", a: ["Hydro", "Solar", "Wind", "Biomass"], c: 1 },
+        { q: "Process used by plants to create food?", a: ["Respiration", "Fermentation", "Photosynthesis", "Digestion"], c: 2 }
+    ];
+
+    let currentQ = 0;
+    let finalScore = 0;
+
+    function begin() {
+        document.getElementById('intro').classList.add('hidden');
+        document.getElementById('gameplay').classList.remove('hidden');
+        renderStep();
+    }
+
+    function renderStep() {
+        const data = ecoDB[currentQ];
+        document.getElementById('q-count').innerText = `QUESTION ${currentQ + 1} - ${ecoDB.length}`;
+        document.getElementById('q-text').innerText = data.q;
+        const grid = document.getElementById('choices-grid');
+        grid.innerHTML = '';
+
+        data.a.forEach((opt, i) => {
+            const b = document.createElement('button');
+            b.className = 'choice-row';
+            b.innerText = opt;
+            b.onclick = () => validate(i, b);
+            grid.appendChild(b);
+        });
+    }
+
+    function validate(userPick, btn) {
+        const correctPos = ecoDB[currentQ].c;
+        const btns = document.querySelectorAll('.choice-row');
+        btns.forEach(b => b.disabled = true);
+
+        if (userPick === correctPos) {
+            btn.classList.add('state-right');
+            finalScore++;
+        } else {
+            btn.classList.add('state-wrong');
+            btns[correctPos].classList.add('state-right');
+        }
+
+        setTimeout(() => {
+            currentQ++;
+            if (currentQ < ecoDB.length) renderStep();
+            else showResult();
+        }, 1200);
+    }
+
+    function createConfetti() {
+        for(let i=0; i<60; i++) {
+            const conf = document.createElement('div');
+            conf.className = 'confetti';
+            conf.style.left = Math.random() * 100 + 'vw';
+            conf.style.animationDelay = Math.random() * 3 + 's';
+            conf.style.backgroundColor = ['#D4A5A5', '#A3B18A', '#FFD700', '#BC8E8E'][Math.floor(Math.random()*4)];
+            document.body.appendChild(conf);
+        }
+    }
+
+    function showResult() {
+        const overlay = document.getElementById('celebration-overlay');
+        const title = document.getElementById('perfect-title');
+        const text = document.getElementById('appreciation-text');
+        const emoji = document.getElementById('medal-emoji');
+
+        if (finalScore >= 9) {
+            overlay.classList.remove('hidden');
+            title.innerText = `${finalScore} / 10`;
+            
+            if (finalScore === 10) {
+                emoji.innerText = "🏆";
+                text.innerHTML = "<strong>MASTER OF THE BIOME!</strong><br>Your knowledge is perfect. You are a true steward of our planet.";
+                createConfetti();
+            } else {
+                emoji.innerText = "🌟";
+                text.innerHTML = "<strong>EXCEPTIONAL WORK!</strong><br>You have a near-perfect understanding of the environment.";
+            }
+        } else {
+            document.getElementById('gameplay').classList.add('hidden');
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('score-big').innerText = finalScore;
+        }
+    }
+</script>
+</body>
+</html>
